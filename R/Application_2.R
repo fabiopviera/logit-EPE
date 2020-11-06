@@ -32,13 +32,13 @@ summary(fit.logit.ENO)
 
 
 ##logit-L
-fit.logit.L <- gamlss(y~1,family = EPE01(mu.link = "identity",sigma.link = "identity"),
+fit.logit.L <- gamlss(y~1,family = EPE01(mu.link = "identity",sigma.link = "identity",nu.link = "identity",tau.link = "identity"),
 method=CG(1000),c.crit=0.01,nu.start = 1,nu.fix = T,tau.start = 1,tau.fix = T,mu.start =0.08)
 summary(fit.logit.L)
 
 
 ##logit-ENO
-fit.logit.NO <- gamlss(y~1,family = EPE01(mu.link = "identity",sigma.link = "identity"),
+fit.logit.NO <- gamlss(y~1,family = EPE01(mu.link = "identity",sigma.link = "identity",nu.link = "identity"),
 method=CG(1000),c.crit=0.01,nu.fix = T,tau.start = 1,tau.fix = T,mu.start =0.08)
 summary(fit.logit.NO)
 
