@@ -1,12 +1,12 @@
 EPE01 <- function (mu.link = "logit", sigma.link="log", nu.link = "log", tau.link = "log")
 {
-  mstats <- checklink(   "mu.link", "Exponentiated Power Exponential (0,1)", substitute(mu.link), 
+  mstats <- checklink("mu.link", "Exponentiated Power Exponential (0,1)", substitute(mu.link), 
                          c("logit", "log", "identity", "own"))
   dstats <- checklink("sigma.link", "Exponentiated Power Exponential (0,1)", substitute(sigma.link), 
                       c("inverse", "log", "identity", "own"))
-  vstats <- checklink(   "nu.link", "Exponentiated Power Exponential (0,1)", substitute(nu.link),    
+  vstats <- checklink("nu.link", "Exponentiated Power Exponential (0,1)", substitute(nu.link),    
                          c("1/nu^2", "log", "identity", "own"))
-  tstats <- checklink(  "tau.link", "Exponentiated Power Exponential (0,1)", substitute(tau.link),   
+  tstats <- checklink("tau.link", "Exponentiated Power Exponential (0,1)", substitute(tau.link),   
                         c("1/tau^2", "log", "identity", "own")) 
   structure(
     list(family = c("EPE01", "Exponentiated Power Exponential (0,1)"),
