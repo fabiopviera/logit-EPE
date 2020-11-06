@@ -2,42 +2,51 @@ require(gamlss)
 require(gamlss.dist)
 require(e1071)
 
+source("logit_EPE_gamlss.R")
+
 data1 <- read.table("data_paper_1_2.txt",header=T,dec=",")
 str(data1)
 
 
-y <- dados$sw/100
+y <- data1$sw/100
 
 #Descriptive
 cbind(round(c(mean=mean(y),median=median(y),sd=sd(y),min=min(y),max=max(y),skew=skewness(y),kurtosi=kurtosis(y)),3))
 
 
-#########################################
-fit0<- gamlss(y ~1,family = EPE01(),method=CG(1000),c.crit=0.01)
-fit0<- gamlss(y ~1,family = EPE01(mu.link = "identity",sigma.link = "identity",nu.link = "identity",tau.link = "identity"),method=CG(1000),c.crit=0.01)
 
-
-plot(fit0)
-summary(fit0)
-
-## logit-EL
-fit01<- gamlss(y ~1,family = EPE01(),method=CG(1000),c.crit=0.01,
-               nu.start = 1,nu.fix = T)
-
-fit01<- gamlss(y ~1,family = EPE01(mu.link = "identity",sigma.link = "identity",nu.link = "identity",tau.link = "identity"),method=CG(1000),c.crit=0.01,
-               nu.start = 1,nu.fix = T,mu.start =0.0544,sigma.start = 0.2348)
-summary(fit01)
-LR.test(fit01,fit0)
-
-
-## logit-PE
-fit02<- gamlss(y ~1,family = EPE01(),method=CG(1000),c.crit=0.01,
-               tau.start = 1,tau.fix = T)
-fit02<- gamlss(y ~1,family = EPE01(mu.link = "identity",sigma.link = "identity",nu.link = "identity",tau.link = "identity"
+##logit-PE
+#For mu = logit link, sigma and nu log link and tau = 1
+#fit.logit.PE <- gamlss(y ~1,family = EPE01(),method=CG(1000),c.crit=0.01, tau.start = 1,tau.fix = T)
+#For identity link
+fit.logit.PE <- gamlss(y ~1,family = EPE01(mu.link = "identity",sigma.link = "identity",nu.link = "identity",tau.link = "identity"
 ),method=CG(1000),c.crit=0.01,
-tau.start = 1,tau.fix = T,mu.start =exp(-2.8544)/(1+exp(-2.8544)),sigma.start = exp(-1.449))
+tau.start = 1,tau.fix = T,control=gamlss.control(tau.step=1))
 
+summary(fit.logit.PE)
 LR.test(fit02,fit0)
+
+
+
+##logit - EPE
+
+#For mu = logit link, sigma, nu and tau log link
+#fit.logit.EPE <- gamlss(y ~1,family = EPE01(),method=CG(1000),c.crit=0.01) 
+#For identity link
+fit.logit.EPE <- gamlss(y ~1,family = EPE01(mu.link = "identity",sigma.link = "identity",nu.link = "identity",tau.link = "identity"),method=CG(1000),c.crit=0.01,mu.start = 0.08,sigma.start = 0.02)
+summary(fit.logit.EPE)
+
+##logit-EL
+#For mu = logit link, sigma and tau log link and nu = 1
+#fit.logit.EL <- gamlss(y ~1,family = EPE01(),method=CG(1000),c.crit=0.01,nu.start = 1,nu.fix = T)
+fit.logit.EL <- gamlss(y~1,family = EPE01(mu.link = "identity",sigma.link = "identity",nu.link = "identity",tau.link = "identity"),method=CG(1000),c.crit=0.01,nu.start = 1,nu.fix = T,mu.start =0.0544,sigma.start = 0.2348)
+summary(fit.logit.EL)
+
+#LR.test
+LR.test(fit.logit.EL,fit.logit.EPE)
+
+
+
 
 ## logit-ENO
 fit03<- gamlss(y ~1,family = EPE01(),method=CG(1000),c.crit=0.01,
@@ -122,7 +131,7 @@ curve(pGB1(x, mu=exp(fit3$mu.coefficients)/(1+exp(fit3$mu.coefficients)),sigma=e
 legend("topleft",c("Empirical distribution","logit-EL","BE","Simplex","GBE"),lwd=c(3,3,3,3,3),lty=c(1,1,2,4,1),col=c("gray40","gray15","gray30","gray45","gray60"),bty='n',cex=1.2)
 
 
-Res.q1 <- fit01$residuals
+Res.q1 <- fit.logit.EL$residuals
 Res.q2 <- fit3$residuals
 Res.q3 <- fit4$residuals
 Res.q4 <- fit5$residuals

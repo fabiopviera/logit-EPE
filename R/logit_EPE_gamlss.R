@@ -134,8 +134,8 @@ EPE01 <- function (mu.link = "logit", sigma.link="log", nu.link = "log", tau.lin
            rqres(pfun="pEPE01", type="Continuous", y=y, mu=mu, sigma=sigma, nu=nu, tau=tau)) ,
          mu.initial = expression(mu <- rep(mean(y), length(y))),
          #mu.initial = expression( mu <- rep(mean(y), length(y))), 
-         #sigma.initial = expression(sigma <- rep(sd(log(y/(1-y))),length(y))), # 
-         sigma.initial = expression( sigma <- rep(sd(y),length(y)) ), #
+         sigma.initial = expression(sigma <- rep(sd(log(y/(1-y))),length(y))), # 
+         #sigma.initial = expression( sigma <- rep(sd(y),length(y)) ), #
          nu.initial = expression( nu <- rep(2, length(y))), 
          tau.initial = expression(tau <-rep(2, length(y))), 
          mu.valid = function(mu) all(mu > 0 & mu < 1)  , 
