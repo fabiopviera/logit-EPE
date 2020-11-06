@@ -53,6 +53,9 @@ summary(fit.logit.EPE)
 
 #LR.test logit-EPE x logit-PE
 LR.test(fit.logit.PE,fit.logit.EPE)
+(LR1 <- (2*(logLik(fit.logit.EPE)-logLik(fit.logit.PE)))[1])
+1-pchisq(LR1,df=1)
+
 
 #LR.test logit-EPE x logit-EL
 LR.test(fit.logit.EL,fit.logit.EPE)
@@ -109,7 +112,7 @@ Res.q3 <- fit.BE$residuals
 Res.q4 <- fit.simplex$residuals
 x11()
 par(mfrow=c(2,2))
-qqnorm(Res.q1,pch=19,col="gray15",ylim = c(-3.5,3),xlim=c(-3,3),main="logit-EL",
+qqnorm(Res.q1,pch=19,col="gray15",ylim = c(-3.5,3),xlim=c(-3,3),main="logit-EPE",
        ylab="Sample Quantiles",xlab="Theorical Quantiles",cex.lab=1.2)
 qqline(Res.q1,col="gray55",lwd=2)
 qqnorm(Res.q2,pch=19,col="gray15",ylim = c(-3.5,3),xlim=c(-3,3),
