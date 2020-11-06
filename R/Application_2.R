@@ -4,7 +4,7 @@ require(e1071)
 
 source("R/logit_EPE_gamlss.R")
 
-data1 <- read.table("data_paper_1_2.txt",header=T,dec=",")
+data1 <- read.table("data_applications_1_2.txt",header=T,dec=",")
 str(data1)
 
 
